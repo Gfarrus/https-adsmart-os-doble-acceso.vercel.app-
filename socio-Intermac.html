@@ -4,10 +4,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 function activarLicit(tipo) {
   const seg = document.getElementById('seg-radar') ? document.getElementById('seg-radar').selectedOptions[0].text : 'Decisores detectados';
+  // Get empresa names from detected licitaciones
+  const empresas = [...document.querySelectorAll('#lres .ln')].map(el => el.textContent).slice(0,3);
+  const empresasList = empresas.length > 0 ? empresas.join(', ') + (document.querySelectorAll('#lres .li').length > 3 ? ' y otras...' : '') : 'empresas detectadas';
   const licitCount = document.querySelectorAll('#lres .li').length;
   const msgs = {
-    mail: `✓ EMAIL TARGET iniciado para [${seg}]. ${licitCount > 0 ? licitCount + ' licitaciones detectadas — enviando a decisores específicos de cada empresa licitante.' : 'Procesando contactos de licitaciones detectadas.'} Estimado: 2-4 horas.`,
-    dv360: `✓ Pauta DV360 activada para [${seg}]. Audiencia determinística: Decisores de empresas en licitaciones detectadas. Impresiones: 12,000–20,000/día.`
+    mail: `✓ EMAIL TARGET activado · ${licitCount} licitaciones · Destinatarios: decisores de ${empresasList} · Canal: email verificado Datiko · Envío estimado: 2-4 horas.`,
+    dv360: `✓ Pauta DV360 activada · Audiencia: decisores de ${empresasList} · Segmento: ${seg} · Impresiones estimadas: 12,000–20,000/día.`
   };
   const fb = document.getElementById('afb-radar');
   if (fb) { fb.textContent = msgs[tipo]; fb.style.display = 'block'; }
@@ -449,7 +452,7 @@ async function buscar(){
             const desde = document.getElementById('fecha-desde').value;
             const hasta = document.getElementById('fecha-hasta').value;
             const filtroFecha = (desde || hasta) ? ` Filtrá licitaciones cuya fecha de apertura esté entre ${desde||'(sin límite inferior)'} y ${hasta||'(sin límite superior)'}.` : '';
-            return `Identificá 8 proyectos reales o altamente probables de gasoductos, ductos y fibra óptica en Vaca Muerta/Neuquén para 2026 que requieran maquinaria de perforación horizontal (HDD), zanjeadoras o equipos de tendido.${filtroFecha} JSON: [{"proyecto":"nombre","empresa_licitante":"quien licita","tipo":"tipo de obra","maquinaria_requerida":"equipo específico","valor_estimado":"USD X","estado":"EN LICITACIÓN/ADJUDICADO/PRÓXIMO","fecha_apertura":"DD/MM/YYYY o estimada","decisor":"cargo","oportunidad":"por qué Intermac debe presentarse"}]`;
+            return `Identificá 8 proyectos reales o altamente probables de gasoductos, ductos y fibra óptica en Vaca Muerta/Neuquén para 2026 que requieran maquinaria de perforación horizontal (HDD), zanjeadoras o equipos de tendido.${filtroFecha} IMPORTANTE: el campo fecha_apertura es OBLIGATORIO — si no conocés la fecha exacta, estimá una fecha realista en formato DD/MM/YYYY basándote en el cronograma del proyecto. JSON: [{"proyecto":"nombre","empresa_licitante":"quien licita","tipo":"tipo de obra","maquinaria_requerida":"equipo específico","valor_estimado":"USD X","estado":"EN LICITACIÓN/ADJUDICADO/PRÓXIMO","fecha_apertura":"DD/MM/YYYY — OBLIGATORIO","decisor":"cargo","oportunidad":"por qué Intermac debe presentarse"}]`;
           })()}],
         max_tokens:2500,temperature:0.3})});
     const d=await r.json();
@@ -460,7 +463,8 @@ async function buscar(){
     document.getElementById('lres').innerHTML=items.map(p=>`
       <div class="li">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-          <div><div class="ln">${p.proyecto}</div><div class="lm">${p.empresa_licitante} · ${p.tipo} · Decisor: ${p.decisor}${p.fecha_apertura ? ' · <span style="color:var(--orange)">Apertura: '+p.fecha_apertura+'</span>' : ''}</div></div>
+          <div><div class="ln">${p.proyecto}</div><div class="lm">${p.empresa_licitante} · ${p.tipo} · Decisor: ${p.decisor}</div>
+        ${p.fecha_apertura ? '<div style="margin-top:4px;"><span style="background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.4);color:var(--orange);padding:3px 10px;font-family:Barlow Condensed,sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;">📅 APERTURA: '+p.fecha_apertura+'</span></div>' : ''}</div>
           <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
             <span class="bdg ${p.estado.includes('LICITACIÓN')?'do':'dg'}">${p.estado}</span>
             <span class="bdg db">${p.valor_estimado}</span>
