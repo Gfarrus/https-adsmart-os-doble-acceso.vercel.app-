@@ -2,18 +2,41 @@
 <html lang="es">
 <head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-function activarLicit(tipo) {
+async function activarLicit(tipo) {
   const seg = document.getElementById('seg-radar') ? document.getElementById('seg-radar').selectedOptions[0].text : 'Decisores detectados';
-  // Get empresa names from detected licitaciones
   const empresas = [...document.querySelectorAll('#lres .ln')].map(el => el.textContent).slice(0,3);
   const empresasList = empresas.length > 0 ? empresas.join(', ') + (document.querySelectorAll('#lres .li').length > 3 ? ' y otras...' : '') : 'empresas detectadas';
   const licitCount = document.querySelectorAll('#lres .li').length;
-  const msgs = {
-    mail: `✓ EMAIL TARGET activado · ${licitCount} licitaciones · Destinatarios: decisores de ${empresasList} · Canal: email verificado Datiko · Envío estimado: 2-4 horas.`,
-    dv360: `✓ Pauta DV360 activada · Audiencia: decisores de ${empresasList} · Segmento: ${seg} · Impresiones estimadas: 12,000–20,000/día.`
-  };
   const fb = document.getElementById('afb-radar');
-  if (fb) { fb.textContent = msgs[tipo]; fb.style.display = 'block'; }
+
+  if (tipo === 'mail') {
+    if(fb){ fb.textContent = '⏳ Creando lista en Klaviyo...'; fb.style.display = 'block'; fb.style.color = 'var(--muted)'; }
+    try {
+      const listName = `AdSmart · Intermac · ${seg} · ${new Date().toLocaleDateString('es-AR')}`;
+      const r = await fetch('/api/klaviyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_list', listName })
+      });
+      const data = await r.json();
+      if (data.success) {
+        if(fb){
+          fb.innerHTML = `✓ Lista creada en Klaviyo: <strong>${data.listName}</strong> · ${licitCount} licitaciones detectadas (${empresasList}) · <a href="https://www.klaviyo.com/lists" target="_blank" style="color:var(--orange);text-decoration:underline;">Abrir Klaviyo →</a> para importar contactos desde Apollo.`;
+          fb.style.color = 'var(--green)';
+        }
+      } else {
+        if(fb){ fb.textContent = 'Error al crear lista en Klaviyo: ' + (data.errors?.[0]?.detail || JSON.stringify(data)); fb.style.color = 'var(--red)'; }
+      }
+    } catch(e) {
+      if(fb){ fb.textContent = 'Error: ' + e.message; fb.style.color = 'var(--red)'; }
+    }
+  } else if (tipo === 'dv360') {
+    if(fb){
+      fb.textContent = `✓ Pauta DV360 activada · Audiencia: decisores de ${empresasList} · Segmento: ${seg} · Impresiones estimadas: 12,000–20,000/día.`;
+      fb.style.color = 'var(--green)';
+      fb.style.display = 'block';
+    }
+  }
 }
 
 </script>
@@ -496,9 +519,29 @@ async function buscar(){
   btn.disabled=false; btn.textContent='🔍 LICITACIONES DETECTADAS';
 }
 
-function activar(tipo,seg){
+async function activar(tipo, seg){
+  const fb_polo = document.getElementById('afb-polo');
+  if (tipo === 'mail') {
+    if(fb_polo){ fb_polo.textContent = '⏳ Creando lista en Klaviyo...'; fb_polo.style.display = 'block'; fb_polo.style.color = 'var(--muted)'; }
+    try {
+      const listName = `AdSmart · Intermac · ${seg} · ${new Date().toLocaleDateString('es-AR')}`;
+      const r = await fetch('/api/klaviyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_list', listName })
+      });
+      const data = await r.json();
+      if (data.success) {
+        if(fb_polo){ fb_polo.innerHTML = `✓ Lista creada en Klaviyo: <strong>${data.listName}</strong> · <a href="https://www.klaviyo.com/lists" target="_blank" style="color:var(--orange);text-decoration:underline;">Abrir Klaviyo →</a> para importar contactos desde Apollo.`; fb_polo.style.color = 'var(--green)'; }
+      } else {
+        if(fb_polo){ fb_polo.textContent = 'Error: ' + (data.errors?.[0]?.detail || JSON.stringify(data)); fb_polo.style.color = 'var(--red)'; }
+      }
+    } catch(e) {
+      if(fb_polo){ fb_polo.textContent = 'Error: ' + e.message; fb_polo.style.color = 'var(--red)'; }
+    }
+    return;
+  }
   const msgs={
-    mail:`✓ Campaña de email iniciada para [${seg}]. Procesando 280+ contactos de contratistas O&G Neuquén. Envío estimado: 2-4 horas.`,
     dv360:`✓ Pauta DV360 activada para [${seg}]. Audiencia: Gerentes de Equipos y Compras O&G Neuquén. Impresiones: 12,000–20,000/día.`
   };
   ['polo','radar'].forEach(p=>{const f=document.getElementById('afb-'+p);if(f){f.textContent=msgs[tipo];f.style.display='block';}});
