@@ -12,7 +12,68 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3aG9nZW5na3JmenJmcHFqbXJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3ODY0ODIsImV4cCI6MjA5MzM2MjQ4Mn0.Lvz-hj7419pdEZEx9NiVtNNbfGAi3FE5rHXj_L7cC5A';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const { data: { session } } = await sb.auth.getSession();
-  if (!session) { window.location = 'login.html'; return; }
+  if (!session) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.innerHTML = '';
+      document.body.style.cssText = 'margin:0;padding:0;background:#0B1120;font-family:Inter,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;';
+      document.body.innerHTML = `
+        <div style="display:flex;width:100vw;min-height:100vh;">
+          <div style="flex:1;background:linear-gradient(135deg,#0B1120 0%,#1a2540 100%);display:flex;flex-direction:column;justify-content:center;padding:60px;min-height:100vh;">
+            <div style="margin-bottom:32px;">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:#fff;letter-spacing:-1px;">AdSmart <span style="color:#F97316;">•</span></span>
+              <div style="color:#94a3b8;font-size:11px;letter-spacing:3px;margin-top:4px;">BUSINESS DEVELOPMENT & STRATEGIC PARTNER.</div>
+            </div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:#fff;line-height:1;margin:0 0 8px;">BIENVENIDO</h1>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:#F97316;line-height:1;margin:0 0 8px;">AL CENTRO DE</h1>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:#4A9EE8;line-height:1;margin:0 0 24px;">OPERACIONES.</h1>
+            <p style="color:#94a3b8;font-size:15px;max-width:400px;line-height:1.6;">Accedé a tu dashboard personalizado con métricas en tiempo real, gestión de campañas y reportes.</p>
+          </div>
+          <div style="width:480px;background:#111827;display:flex;flex-direction:column;justify-content:center;padding:60px;min-height:100vh;">
+            <div style="margin-bottom:24px;">
+              <a href="https://adsmartm.com" style="color:#94a3b8;font-size:13px;text-decoration:none;">← Volver al inicio</a>
+            </div>
+            <h2 style="color:#fff;font-size:28px;font-weight:700;margin:0 0 8px;">Iniciar Sesión</h2>
+            <p style="color:#94a3b8;font-size:14px;margin:0 0 32px;">Ingresá tus credenciales para acceder al OS</p>
+            <div id="login-error" style="display:none;background:#ef444420;border:1px solid #ef4444;color:#ef4444;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;"></div>
+            <div style="margin-bottom:20px;">
+              <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:8px;">Email</label>
+              <input id="login-email" type="email" placeholder="tu@empresa.com" style="width:100%;padding:14px;background:#1f2937;border:1px solid #374151;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;outline:none;" />
+            </div>
+            <div style="margin-bottom:28px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <label style="color:#94a3b8;font-size:13px;">Contraseña</label>
+              </div>
+              <input id="login-password" type="password" placeholder="••••••••" style="width:100%;padding:14px;background:#1f2937;border:1px solid #374151;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;outline:none;" />
+            </div>
+            <button id="login-btn" onclick="doLogin()" style="width:100%;padding:16px;background:#F97316;border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">Acceder al OS</button>
+            <p style="color:#94a3b8;font-size:13px;text-align:center;margin-top:24px;">¿No tenés cuenta? <a href="mailto:gfarrus@adsmartm.com" style="color:#F97316;text-decoration:none;">Contactanos</a></p>
+          </div>
+        </div>
+      `;
+      window.doLogin = async function() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const btn = document.getElementById('login-btn');
+        const err = document.getElementById('login-error');
+        btn.textContent = 'Ingresando...';
+        btn.disabled = true;
+        err.style.display = 'none';
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) {
+          err.textContent = 'Email o contraseña incorrectos.';
+          err.style.display = 'block';
+          btn.textContent = 'Acceder al OS';
+          btn.disabled = false;
+        } else {
+          window.location.reload();
+        }
+      };
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') window.doLogin();
+      });
+    });
+    return;
+  }
   const { data: profile } = await sb.from('user_profiles').select('role,full_name').eq('id', session.user.id).single();
   if (profile?.role === 'client') { window.location = 'client-dashboard.html'; return; }
   // Mostrar nombre en header si existe
