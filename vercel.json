@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/Socio-Intermac", "destination": "/Socio-Intermac" },
-    { "source": "/Socio-Moni", "destination": "/Socio-Moni" },
+    { "source": "/socio-Intermac.html", "destination": "/socio-Intermac.html" },
+    { "source": "/socio-moni.html", "destination": "/socio-moni.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
