@@ -1,7 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/socio-Intermac.html", "destination": "/socio-Intermac.html" },
-    { "source": "/socio-moni.html", "destination": "/socio-moni.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "cleanUrls": false,
+  "routes": [
+    { "src": "/socio-Intermac.html", "dest": "/socio-Intermac.html" },
+    { "src": "/socio-moni.html", "dest": "/socio-moni.html" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
