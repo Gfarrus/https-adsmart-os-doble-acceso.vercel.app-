@@ -2215,8 +2215,8 @@ function loadLSHistory() {
 }
 
 // ---- AI PROSPECTS (GROQ) ----
-const GROQ_KEY = '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';
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_KEY = null; // moved to server-side proxy
+const GROQ_URL = '/api/groq';
 
 let allProspects = [];
 
@@ -2262,10 +2262,7 @@ IMPORTANTE: Solo empresas reales y verificables de ${pais}. Ordenalas por fit_sc
   try {
     const res = await fetch(GROQ_URL, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GROQ_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
@@ -2577,7 +2574,7 @@ Respondé en español, conciso, máximo 200 palabras. Sé específico. Empezá d
 
       const res = await fetch(GROQ_URL, {
         method:'POST',
-        headers:{ 'Authorization':`Bearer ${GROQ_KEY}`, 'Content-Type':'application/json' },
+        headers:{ 'Content-Type':'application/json' },
         body: JSON.stringify({
           model:'llama-3.3-70b-versatile',
           messages:[
@@ -2752,7 +2749,7 @@ Respondé en español, de forma concreta y ejecutiva. Máximo 300 palabras. Usá
 
     const response = await fetch(GROQ_URL, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${GROQ_KEY}`, 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
