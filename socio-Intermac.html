@@ -457,8 +457,19 @@ async function buscar(){
         max_tokens:2500,temperature:0.3})});
     const d=await r.json();
     const txt=d.choices?.[0]?.message?.content||'[]';
-    const m=txt.replace(/```json|```/g,'').trim().match(/\[[\s\S]*\]/);
-    const items=m?JSON.parse(m[0]):[];
+    let items=[];
+    try{
+      const clean=txt.replace(/```json|```/g,'').trim();
+      const m=clean.match(/\[[\s\S]*\]/);
+      if(m) items=JSON.parse(m[0]);
+    }catch(pe){
+      // Try to extract partial JSON
+      try{
+        const start=txt.indexOf('[');
+        const end=txt.lastIndexOf(']');
+        if(start!==-1&&end!==-1) items=JSON.parse(txt.substring(start,end+1));
+      }catch(pe2){ items=[]; }
+    }
     document.getElementById('lload').style.display='none';
     document.getElementById('lres').innerHTML=items.map(p=>`
       <div class="li">
@@ -477,7 +488,7 @@ async function buscar(){
   }catch(e){
     document.getElementById('lload').style.display='none';
     document.getElementById('lem').style.display='block';
-    document.getElementById('lem').textContent='Error al detectar licitaciones. Intentá de nuevo.';
+    document.getElementById('lem').textContent='Error al detectar licitaciones. Intentá de nuevo. ('+e.message+')';
   }
   btn.disabled=false; btn.textContent='🔍 LICITACIONES DETECTADAS';
 }
