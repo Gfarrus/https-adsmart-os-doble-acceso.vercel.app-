@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdSmart AI — Partner Potenciador O&G · Vaca Muerta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #0A1628;
+    --navy2:   #0D1F3C;
+    --navy3:   #112347;
+    --azure:   #4A9EE8;
+    --azure2:  #2D7EC7;
+    --azure3:  #6BB8F4;
+    --orange:  #F97316;
+    --orange2: #EA6000;
+    --white:   #FFFFFF;
+    --white70: rgba(255,255,255,0.70);
+    --white30: rgba(255,255,255,0.30);
+    --white10: rgba(255,255,255,0.08);
+    --white05: rgba(255,255,255,0.04);
+    --grid:    rgba(74,158,232,0.06);
+    --glow:    rgba(74,158,232,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── TOP NAV BAR ── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 48px;
+    background: rgba(10,22,40,0.92);
+    border-bottom: 1px solid rgba(74,158,232,0.18);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 1000;
+  }
+  .topbar-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-brand span { color: var(--azure); }
+  .topbar-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--azure);
+    box-shadow: 0 0 8px var(--azure);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.7); }
+  }
+  .topbar-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--white30);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .topbar-badge {
+    background: rgba(249,115,22,0.15);
+    border: 1px solid rgba(249,115,22,0.35);
+    color: var(--orange);
+    font-size: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 2px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── SLIDE NAV DOTS ── */
+  .slide-nav {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 999;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--white30);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .nav-dot.active, .nav-dot:hover {
+    border-color: var(--azure);
+    background: var(--azure);
+    box-shadow: 0 0 10px var(--azure);
+  }
+  .nav-dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--azure);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+  .nav-dot:hover::after { opacity: 1; }
+
+  /* ── SECTIONS ── */
+  section {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 60px;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+
+  /* ── SLIDE 1: COVER ── */
+  #s1 {
+    background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(74,158,232,0.08) 0%, transparent 70%),
+                var(--navy);
+    align-items: center;
+    text-align: center;
+  }
+  .s1-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--azure);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .s1-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.45s forwards;
+  }
+  .s1-title .hl { color: var(--azure); }
+  .s1-title .hl2 { color: var(--orange); }
+  .s1-sub {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: clamp(16px, 2.2vw, 22px);
+    color: var(--white70);
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+  .s1-tags {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.95s forwards;
+  }
+  .tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+  }
+  .tag-azure {
+    background: rgba(74,158,232,0.12);
+    border: 1px solid rgba(74,158,232,0.35);
+    color: var(--azure3);
+  }
+  .tag-orange {
+    background: rgba(249,115,22,0.12);
+    border: 1px solid rgba(249,115,22,0.35);
+    color: var(--orange);
+  }
+
+  /* hero orb */
+  .s1-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(74,158,232,0.08);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: orbSpin 20s linear infinite;
+  }
+  .s1-orb::before {
+    content: '';
+    position: absolute;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(74,158,232,0.12);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .s1-orb::after {
+    content: '';
+    position: absolute;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    border: 1px solid rgba(249,115,22,0.15);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  @keyframes orbSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  /* scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s 1.6s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--white30);
+    text-transform: uppercase;
+  }
+  .scroll-arrow {
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, var(--azure), transparent);
+    animation: scrollPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  /* ── SLIDE HEADER SHARED ── */
+  .slide-header {
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+  .slide-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--azure);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .slide-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5.5vw, 68px);
+    line-height: 0.97;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .slide-title .hl { color: var(--azure); }
+  .slide-title .hl2 { color: var(--orange); }
+  .slide-divider {
+    width: 48px; height: 3px;
+    background: var(--orange);
+    margin-top: 18px;
+  }
+
+  /* ── SLIDE 2 ── */
+  #s2 { background: var(--navy); }
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .s2-card {
+    background: var(--white05);
+    border: 1px solid var(--white10);
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .s2-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--azure), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .s2-card:hover { border-color: rgba(74,158,232,0.3); background: rgba(74,158,232,0.04); }
+  .s2-card:hover::before { opacity: 1; }
+  .s2-card-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .s2-card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .s2-card-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--white70);
+  }
+  .s2-stat {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 42px;
+    color: var(--azure);
+    line-height: 1;
+    margin-top: 16px;
+  }
+  .s2-stat small {
+    font-size: 16px;
+    color: var(--white30);
+    font-weight: 400;
+  }
+  .s2-insight {
+    grid-column: 1 / -1;
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: 4px;
+    padding: 22px 28px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    position: relative;
+  }
+  .s2-insight::before {
+    content: '//';
+    color: var(--orange);
+    margin-right: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  /* ── SLIDE 3 ── */
+  #s3 {
+    background: linear-gradient(135deg, var(--navy) 60%, rgba(13,31,60,0.5) 100%);
+  }
+  .s3-dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .s3-pillar {
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .s3-pillar-ai {
+    background: rgba(74,158,232,0.06);
+    border: 1px solid rgba(74,158,232,0.22);
+  }
+  .s3-pillar-ai::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,158,232,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .s3-pillar-presencia {
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.22);
+  }
+  .s3-pillar-presencia::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,115,22,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .s3-pillar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .label-azure { color: var(--azure); }
+  .label-orange { color: var(--orange); }
+  .s3-pillar-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .s3-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .s3-list li {
+    font-size: 14px;
+    color: var(--white70);
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+  }
+  .s3-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--azure);
+    font-size: 12px;
+  }
+  .s3-pillar-presencia .s3-list li::before { color: var(--orange); }
+
+  .s3-banner {
+    margin-top: 20px;
+    background: linear-gradient(135deg, rgba(74,158,232,0.1), rgba(249,115,22,0.08));
+    border: 1px solid rgba(74,158,232,0.2);
+    border-left: 3px solid var(--orange);
+    border-radius: 4px;
+    padding: 20px 24px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .s3-banner-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--white);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+  .s3-banner-sub {
+    font-size: 13px;
+    color: var(--white70);
+    font-weight: 400;
+    font-family: 'Barlow', sans-serif;
+    margin-top: 3px;
+  }
+
+  /* ── SLIDE 4 ── */
+  #s4 { background: var(--navy); }
+  .s4-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 32px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .s4-funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .funnel-step {
+    border-radius: 3px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .funnel-step:hover { transform: translateX(4px); }
+  .funnel-step::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .fs-1 { border-color: rgba(74,158,232,0.3); background: rgba(74,158,232,0.08); }
+  .fs-1::before { background: var(--azure); }
+  .fs-2 { border-color: rgba(74,158,232,0.2); background: rgba(74,158,232,0.05); }
+  .fs-2::before { background: var(--azure2); }
+  .fs-3 { border-color: rgba(249,115,22,0.25); background: rgba(249,115,22,0.06); }
+  .fs-3::before { background: var(--orange); }
+  .fs-4 { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.1); }
+  .fs-4::before { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  .funnel-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+  .funnel-detail {
+    font-size: 12px;
+    color: var(--white70);
+    margin-top: 2px;
+    font-family: 'Barlow', sans-serif;
+  }
+  .funnel-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--azure);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .fs-4 .funnel-count { color: var(--orange); }
+
+  .s4-table-wrap {
+    background: var(--white05);
+    border: 1px solid var(--white10);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .s4-table-header {
+    background: rgba(74,158,232,0.1);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--white10);
+  }
+  .s4-table-header span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--azure);
+    text-transform: uppercase;
+  }
+  .s4-live-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--orange);
+  }
+  .s4-live-dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 6px var(--orange);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  table.signal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.signal-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white30);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--white10);
+  }
+  table.signal-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--white05);
+    color: var(--white70);
+    vertical-align: middle;
+  }
+  table.signal-table tr:last-child td { border-bottom: none; }
+  table.signal-table tr:hover td { background: rgba(74,158,232,0.04); color: var(--white); }
+  .signal-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .score-bar {
+    width: 48px; height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--azure);
+  }
+  .score-fill.hot { background: var(--orange); }
+  .score-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--azure);
+    font-weight: 500;
+  }
+  .score-num.hot { color: var(--orange); }
+  .status-pill {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+  }
+  .pill-new {
+    background: rgba(74,158,232,0.15);
+    border: 1px solid rgba(74,158,232,0.3);
+    color: var(--azure);
+  }
+  .pill-hot {
+    background: rgba(249,115,22,0.15);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--orange);
+  }
+  .pill-ok {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--white70);
+  }
+
+  /* ── SLIDE 5 ── */
+  #s5 {
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(249,115,22,0.05) 0%, transparent 60%), var(--navy);
+  }
+  .s5-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .s5-price-block {
+    background: rgba(249,115,22,0.07);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: 4px;
+    padding: 36px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .s5-price-block::before {
+    content: 'INVERSIÓN ESTRATÉGICA';
+    position: absolute;
+    top: 16px; left: 50%; transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    white-space: nowrap;
+  }
+  .s5-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    color: var(--white);
+    line-height: 1;
+    margin-top: 28px;
+  }
+  .s5-price .curr { font-size: 28px; color: var(--orange); vertical-align: top; padding-top: 10px; display: inline-block; }
+  .s5-price .mo { font-size: 20px; color: var(--white30); }
+  .s5-range {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    color: var(--white30);
+    margin-top: 6px;
+    letter-spacing: 0.06em;
+  }
+  .s5-divider { width: 40px; height: 2px; background: var(--orange); margin: 20px auto; }
+
+  .s5-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .s5-metric {
+    background: var(--white05);
+    border: 1px solid var(--white10);
+    border-radius: 3px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.3s;
+  }
+  .s5-metric:hover { border-color: rgba(74,158,232,0.25); }
+  .s5-metric-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--white70);
+  }
+  .s5-metric-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--azure);
+  }
+  .s5-metric-val.good { color: var(--orange); }
+
+  .s5-callout {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(74,158,232,0.08), rgba(249,115,22,0.08));
+    border: 1px solid rgba(74,158,232,0.2);
+    border-radius: 4px;
+    padding: 22px 28px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--white);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+  }
+  .s5-callout strong { color: var(--orange); }
+
+  /* ── SLIDE 6 ── */
+  #s6 {
+    background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(74,158,232,0.07) 0%, transparent 65%), var(--navy);
+    align-items: center;
+    text-align: center;
+  }
+  .s6-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+  }
+  .s6-steps {
+    display: flex;
+    gap: 0;
+    margin: 40px 0;
+    position: relative;
+  }
+  .s6-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 40px; right: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--azure), var(--orange));
+    z-index: 0;
+  }
+  .s6-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .s6-step-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+  }
+  .s6-step:nth-child(1) .s6-step-num { border-color: var(--azure); color: var(--azure); }
+  .s6-step:nth-child(2) .s6-step-num { border-color: var(--azure2); color: var(--azure2); }
+  .s6-step:nth-child(3) .s6-step-num { border-color: var(--orange); color: var(--orange); }
+  .s6-step-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--white70);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .s6-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, var(--orange), var(--orange2));
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 0 32px rgba(249,115,22,0.3), 0 4px 20px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  .s6-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .s6-cta:hover { transform: translateY(-2px); box-shadow: 0 0 48px rgba(249,115,22,0.45), 0 8px 32px rgba(0,0,0,0.5); }
+  .s6-cta:hover::before { opacity: 1; }
+  .s6-cta:active { transform: translateY(0); }
+  .cta-arrow { font-size: 22px; }
+
+  .s6-sub {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--white30);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .s6-contact {
+    margin-top: 36px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .s6-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--white70);
+  }
+  .s6-contact-item .ico { color: var(--azure); font-size: 16px; }
+
+  /* ── FOOTER ── */
+  .slide-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 60px; right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+    border-top: 1px solid var(--white10);
+    padding-top: 16px;
+  }
+  .footer-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--white30);
+    text-transform: uppercase;
+  }
+  .footer-brand span { color: var(--azure); }
+  .footer-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--white30);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.35s; }
+  .reveal-delay-4 { transition-delay: 0.5s; }
+  .reveal-delay-5 { transition-delay: 0.65s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    section { padding: 80px 24px 60px; }
+    .s2-grid, .s3-dual, .s4-layout, .s5-layout { grid-template-columns: 1fr; }
+    .s2-insight { grid-column: 1; }
+    .s5-callout { grid-column: 1; }
+    .slide-footer { left: 24px; right: 24px; }
+    .slide-nav { display: none; }
+    .s6-steps::before { display: none; }
+  }
+  @media (max-width: 600px) {
+    .s1-title { font-size: 38px; }
+    .slide-title { font-size: 30px; }
+    .s5-price { font-size: 48px; }
+    .s6-cta { font-size: 16px; padding: 14px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-dot"></div>
+    Ad<span>Smart</span> OS
+  </div>
+  <div class="topbar-right">
+    <span>UN02 · O&G / MINERÍA</span>
+    <span class="topbar-badge">Partner Deck 2026</span>
+  </div>
+</div>
+
+<!-- NAV DOTS -->
+<nav class="slide-nav" id="slideNav">
+  <div class="nav-dot active" data-target="s1" data-label="Portada"></div>
+  <div class="nav-dot" data-target="s2" data-label="Desafío"></div>
+  <div class="nav-dot" data-target="s3" data-label="Solución"></div>
+  <div class="nav-dot" data-target="s4" data-label="Radar"></div>
+  <div class="nav-dot" data-target="s5" data-label="Inversión"></div>
+  <div class="nav-dot" data-target="s6" data-label="Acción"></div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 1 – COVER                             -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s1">
+  <div class="s1-orb"></div>
+
+  <p class="s1-eyebrow">AdSmart AI · Vaca Muerta · 2026</p>
+
+  <h1 class="s1-title">
+    Partner <span class="hl">Potenciador</span><br>
+    de <span class="hl2">Negocios</span>:<br>
+    El Futuro del<br>Oil &amp; Gas
+  </h1>
+
+  <p class="s1-sub">
+    IA de Precisión + Presencia Estratégica en el Corazón de Vaca Muerta.<br>
+    Contratos de $500K–$2.5M USD. Cerrados desde adentro.
+  </p>
+
+  <div class="s1-tags">
+    <span class="tag tag-azure">RAG Systems</span>
+    <span class="tag tag-azure">Apollo.io Intelligence</span>
+    <span class="tag tag-azure">DV360 Performance</span>
+    <span class="tag tag-orange">Polo Tecnológico Neuquén</span>
+    <span class="tag tag-orange">Presencia Añelo</span>
+    <span class="tag tag-orange">Quinto Anillo</span>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-brand">Ad<span>Smart</span> AI</span>
+    <span class="footer-tag">CONFIDENCIAL · 2026</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 2 – EL DESAFÍO                        -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s2">
+  <div class="slide-header reveal">
+    <span class="slide-num">// 02 · El Desafío</span>
+    <h2 class="slide-title">El <span class="hl">Quinto Anillo</span><br>No se Abre<br>con un <span class="hl2">Mail Frío</span></h2>
+    <div class="slide-divider"></div>
+  </div>
+
+  <div class="s2-grid">
+    <div class="s2-card reveal reveal-delay-1">
+      <span class="s2-card-icon">🔐</span>
+      <div class="s2-card-title">Información Privilegiada</div>
+      <div class="s2-card-body">
+        Las licitaciones clave en Vaca Muerta no se publican en Boletín Oficial. Circulan entre relaciones de confianza construidas durante años. Quien llega tarde, ya perdió.
+      </div>
+      <span class="s2-stat">72h <small>antes que el mercado</small></span>
+    </div>
+
+    <div class="s2-card reveal reveal-delay-2">
+      <span class="s2-card-icon">🏔️</span>
+      <div class="s2-card-title">Posicionamiento Real</div>
+      <div class="s2-card-body">
+        La distancia física importa. Una empresa sin presencia en Neuquén o Añelo no existe en la mente del decisor. Nadie cierra un contrato millonario con alguien que nunca pisó la cuenca.
+      </div>
+      <span class="s2-stat">1,200km <small>desde Buenos Aires</small></span>
+    </div>
+
+    <div class="s2-card reveal reveal-delay-3">
+      <span class="s2-card-icon">🤝</span>
+      <div class="s2-card-title">Confianza Local</div>
+      <div class="s2-card-body">
+        Los proveedores del Quinto Anillo compiten contra empresas con años de trato cara a cara con los decisores. Sin un representante que sea parte de ese ecosistema, la puerta no se abre.
+      </div>
+      <span class="s2-stat">$2.5M <small>ticket promedio objetivo</small></span>
+    </div>
+
+    <div class="s2-card reveal reveal-delay-4">
+      <span class="s2-card-icon">⚡</span>
+      <div class="s2-card-title">Ventana Temporal</div>
+      <div class="s2-card-body">
+        Vaca Muerta es hoy la inversión energética más grande de Latinoamérica. La ventana de posicionamiento para nuevos proveedores estratégicos se está cerrando. Actuar ahora no es ambición — es urgencia operativa.
+      </div>
+      <span class="s2-stat">+40B <small>USD en inversión proyectada</small></span>
+    </div>
+
+    <div class="s2-insight reveal reveal-delay-5">
+      Los grandes contratos O&G no se cierran con mails fríos. Se cierran con información correcta, presencia real y el nombre correcto en la mesa correcta. Eso es exactamente lo que hacemos.
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-brand">Ad<span>Smart</span> AI</span>
+    <span class="footer-tag">UN02 · O&G / MINERÍA</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 3 – SOLUCIÓN DUAL                     -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s3">
+  <div class="slide-header reveal">
+    <span class="slide-num">// 03 · La Solución</span>
+    <h2 class="slide-title">Doble Motor:<br><span class="hl">Algoritmo</span> +<br><span class="hl2">Bandera</span> en el Terreno</h2>
+    <div class="slide-divider"></div>
+  </div>
+
+  <div class="s3-dual">
+    <div class="s3-pillar s3-pillar-ai reveal reveal-delay-1">
+      <span class="s3-pillar-label label-azure">// Pilar 01 · AdSmart OS</span>
+      <div class="s3-pillar-title">Inteligencia<br>Artificial de<br>Precisión</div>
+      <ul class="s3-list">
+        <li>Sistema RAG entrenado sobre datos sectoriales O&G y Minería para detección de oportunidades antes de publicación.</li>
+        <li>Apollo.io + LinkedIn scraping automatizado: decisores identificados por cargo, empresa, señales de intent y presupuesto estimado.</li>
+        <li>DV360 performance con audiencias determinísticas en verticales industriales.</li>
+        <li>Pipeline scoring en tiempo real: priorización automática de leads por probabilidad de cierre.</li>
+        <li>Dashboard AdSmart OS auditado y trazable, con alertas por licitación y movimiento de contactos clave.</li>
+      </ul>
+    </div>
+
+    <div class="s3-pillar s3-pillar-presencia reveal reveal-delay-2">
+      <span class="s3-pillar-label label-orange">// Pilar 02 · Presencia Estratégica</span>
+      <div class="s3-pillar-title">Bandera<br>en Vaca<br>Muerta</div>
+      <ul class="s3-list">
+        <li><strong style="color:var(--white)">Polo Tecnológico Neuquén</strong> — Presencia física institucional. Acceso directo a la red industrial, gubernamental y tecnológica de la cuenca. Apalancado con Sima Ingeniería.</li>
+        <li><strong style="color:var(--white)">Añelo</strong> — El centro operativo de Vaca Muerta. Representación ejecutiva presencial con red de contactos de primer nivel.</li>
+        <li>Gestión de relaciones con decisores en YPF, Tecpetrol, Wintershall, TotalEnergies y proveedores del Quinto Anillo.</li>
+        <li>Participación activa en eventos, rondas de negocios y reuniones de comité donde se deciden los contratos.</li>
+        <li>Equipo de socios técnicos: Rodrigo Garcia Berro (Ing. Petróleo ITBA), Juan Siegenthaler, Augusto Clement (SUMATO AI), Jorge Colla (San Andrés).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="s3-banner reveal reveal-delay-3">
+    <span style="font-size:28px;flex-shrink:0">🚩</span>
+    <div>
+      <div class="s3-banner-text">Plantamos bandera por nuestros socios directamente en las mesas de decisión.</div>
+      <div class="s3-banner-sub">Nadie más en Argentina combina RAG systems operativos con representación ejecutiva territorial en la cuenca petrolera más activa de LATAM.</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-brand">Ad<span>Smart</span> AI</span>
+    <span class="footer-tag">UN02 · O&G / MINERÍA</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 4 – RADAR DE OPORTUNIDADES            -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s4">
+  <div class="slide-header reveal">
+    <span class="slide-num">// 04 · Tecnología</span>
+    <h2 class="slide-title">El <span class="hl">Radar</span> de<br>Oportunidades:<br>Primero que <span class="hl2">Nadie</span></h2>
+    <div class="slide-divider"></div>
+  </div>
+
+  <div class="s4-layout">
+    <!-- Funnel -->
+    <div>
+      <p class="reveal" style="font-size:13px;color:var(--white30);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:16px;">Pipeline de detección · Tiempo real</p>
+      <div class="s4-funnel">
+        <div class="funnel-step fs-1 reveal reveal-delay-1">
+          <div>
+            <div class="funnel-label">Ingesta de Señales</div>
+            <div class="funnel-detail">Apollo.io · LinkedIn · Boletines · OOPP Neuquén</div>
+          </div>
+          <div class="funnel-count">∞ <span style="font-size:13px;color:var(--white30)">fuentes</span></div>
+        </div>
+        <div class="funnel-step fs-2 reveal reveal-delay-2">
+          <div>
+            <div class="funnel-label">Filtrado RAG</div>
+            <div class="funnel-detail">Modelo privado entrenado en verticales O&G y Minería</div>
+          </div>
+          <div class="funnel-count">847</div>
+        </div>
+        <div class="funnel-step fs-3 reveal reveal-delay-3">
+          <div>
+            <div class="funnel-label">Leads Calificados</div>
+            <div class="funnel-detail">Decisor identificado · Presupuesto estimado · Intent</div>
+          </div>
+          <div class="funnel-count">124</div>
+        </div>
+        <div class="funnel-step fs-4 reveal reveal-delay-4">
+          <div>
+            <div class="funnel-label">Oportunidades HOT</div>
+            <div class="funnel-detail">Score &gt;80 · Contacto activo · Timeline &lt;90 días</div>
+          </div>
+          <div class="funnel-count" style="color:var(--orange)">18 🔥</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signal Table -->
+    <div class="reveal reveal-delay-2">
+      <div class="s4-table-wrap">
+        <div class="s4-table-header">
+          <span>Signal Intelligence · Vaca Muerta</span>
+          <span class="s4-live-dot">LIVE</span>
+        </div>
+        <table class="signal-table">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Oportunidad</th>
+              <th>Score</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--white)">Tecpetrol</strong></td>
+              <td>Software O&amp;M Pozos</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill hot" style="width:92%"></div></div>
+                  <span class="score-num hot">92</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-hot">HOT</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--white)">Wintershall</strong></td>
+              <td>Analytics Producción</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill hot" style="width:87%"></div></div>
+                  <span class="score-num hot">87</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-hot">HOT</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--white)">YPF</strong></td>
+              <td>Automatización Informes</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill" style="width:74%"></div></div>
+                  <span class="score-num">74</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-new">NEW</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--white)">TotalEnergies</strong></td>
+              <td>Compliance IA</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill" style="width:68%"></div></div>
+                  <span class="score-num">68</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-new">NEW</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--white)">Intermac SA</strong></td>
+              <td>Data Estratégica Licit.</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill" style="width:61%"></div></div>
+                  <span class="score-num">61</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-ok">WARM</span></td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--white)">Grupo GyM</strong></td>
+              <td>Prospección Contratos</td>
+              <td>
+                <div class="signal-score">
+                  <div class="score-bar"><div class="score-fill" style="width:55%"></div></div>
+                  <span class="score-num">55</span>
+                </div>
+              </td>
+              <td><span class="status-pill pill-ok">WARM</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:11px;color:var(--white30);margin-top:10px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;">* Datos simulados con fines ilustrativos. El sistema opera con fuentes reales en producción.</p>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-brand">Ad<span>Smart</span> AI</span>
+    <span class="footer-tag">UN02 · RADAR SYSTEM</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 5 – MODELO DE INVERSIÓN               -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s5">
+  <div class="slide-header reveal">
+    <span class="slide-num">// 05 · Inversión</span>
+    <h2 class="slide-title">Riesgo<br><span class="hl2">Asimétrico</span>:<br>Mínimo Gasto,<br><span class="hl">Máximo</span> Upside</h2>
+    <div class="slide-divider"></div>
+  </div>
+
+  <div class="s5-layout">
+    <div class="s5-price-block reveal reveal-delay-1">
+      <div class="s5-price">
+        <span class="curr">$</span>2–3K<span class="mo">/mes</span>
+      </div>
+      <div class="s5-range">USD 2,000 – 3,000 / mes</div>
+      <div class="s5-divider"></div>
+      <div style="font-size:13px;color:var(--white70);line-height:1.6;">
+        <strong style="color:var(--white)">Retainer operativo todo incluido:</strong><br>
+        AdSmart OS activo · Radar de señales · Representación ejecutiva territorial · Presencia Polo Tecnológico Neuquén · Gestión de relaciones · Reporting mensual auditado.
+      </div>
+      <div style="margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--orange);letter-spacing:0.15em;">
+        MODELO: RETAINER FIJO + SUCCESS FEE
+      </div>
+    </div>
+
+    <div class="s5-metrics reveal reveal-delay-2">
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">Inversión anual máxima</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Si no se cierra ningún deal</div>
+        </div>
+        <div class="s5-metric-val">$36K</div>
+      </div>
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">Ticket mínimo objetivo</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Contrato directo gestionado</div>
+        </div>
+        <div class="s5-metric-val good">$500K</div>
+      </div>
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">ROI potencial 1 deal</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Ratio retorno / inversión</div>
+        </div>
+        <div class="s5-metric-val good">14:1</div>
+      </div>
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">Ticket máximo objetivo</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Contratos marco O&G</div>
+        </div>
+        <div class="s5-metric-val good">$2.5M</div>
+      </div>
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">Tiempo a primer deal</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Pipeline activo desde mes 1</div>
+        </div>
+        <div class="s5-metric-val">60–90d</div>
+      </div>
+      <div class="s5-metric">
+        <div>
+          <div class="s5-metric-label">Escala algoritmo</div>
+          <div style="font-size:12px;color:var(--white30);font-family:'Barlow',sans-serif;margin-top:2px;">Sin costo marginal por lead</div>
+        </div>
+        <div class="s5-metric-val good">∞</div>
+      </div>
+    </div>
+
+    <div class="s5-callout reveal reveal-delay-3">
+      Una inversión de <strong>$36K anuales</strong> para acceder a un pipeline de <strong>contratos de 7 cifras en USD</strong> no es un costo de marketing. Es el retainer más eficiente del sector energético argentino. El algoritmo escala sin límite. La presencia territorial ya está instalada. <strong>El riesgo asimétrico es a su favor.</strong>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-brand">Ad<span>Smart</span> AI</span>
+    <span class="footer-tag">UN02 · MODELO DE NEGOCIO</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 6 – PRÓXIMOS PASOS                    -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="s6">
+  <div class="s6-inner">
+    <div class="slide-header reveal" style="text-align:center;">
+      <span class="slide-num" style="display:block;text-align:center;">// 06 · Acción</span>
+      <h2 class="slide-title" style="text-align:center;">¿Cuándo<br><span class="hl">Empezamos</span>?</h2>
+      <div class="slide-divider" style="margin:18px auto 0;"></div>
+    </div>
+
+    <div class="s6-steps reveal reveal-delay-1">
+      <div class="s6-step">
+        <div class="s6-step-num">01</div>
+        <div class="s6-step-label">Auditoría de<br>Viabilidad<br><span style="color:var(--azure);font-size:10px;display:block;margin-top:4px;">72 horas</span></div>
+      </div>
+      <div class="s6-step">
+        <div class="s6-step-num">02</div>
+        <div class="s6-step-label">Activación<br>Radar O&G<br><span style="color:var(--azure);font-size:10px;display:block;margin-top:4px;">Semana 1</span></div>
+      </div>
+      <div class="s6-step">
+        <div class="s6-step-num">03</div>
+        <div class="s6-step-label">Presencia<br>Territorial<br><span style="color:var(--orange);font-size:10px;display:block;margin-top:4px;">Mes 1 → Deal</span></div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <a href="mailto:gonzalo@adsmartm.com?subject=Auditoría%20de%20Viabilidad%20O%26G%20-%20Vaca%20Muerta" class="s6-cta">
+        <span>Iniciar Auditoría de Viabilidad</span>
+        <span class="cta-arrow">→</span>
+      </a>
+      <p class="s6-sub">Sin costo · Sin compromiso · 72 horas de respuesta</p>
+    </div>
+
+    <div class="s6-contact reveal reveal-delay-3">
+      <span class="s6-contact-item"><span class="ico">📧</span> gonzalo@adsmartm.com</span>
+      <span class="s6-contact-item"><span class="ico">🌐</span> os.adsmartm.com</span>
+      <span class="s6-contact-item"><span class="ico">📍</span> Buenos Aires · Neuquén · Añelo</span>
+    </div>
+  </div>
+
+  <div class="slide-footer" style="border-top-color:rgba(74,158,232,0.12);">
+    <span class="footer-brand">Ad<span>Smart</span> AI — UN02</span>
+    <span class="footer-tag">MACHINE RESULTS. DELIVERED.</span>
+  </div>
+</section>
+
+<script>
+  // ── SCROLL SPY → NAV DOTS ──
+  const sections = document.querySelectorAll('section');
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        dots.forEach(d => d.classList.remove('active'));
+        const active = document.querySelector(`.nav-dot[data-target="${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ── NAV DOT CLICK ──
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = document.getElementById(dot.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ── REVEAL ON SCROLL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // ── LIVE CLOCK (topbar optional) ──
+  // already minimal — no clock added to keep it clean
+</script>
+</body>
+</html>
