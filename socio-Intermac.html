@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 async function activarLicit(tipo) {
   const seg = document.getElementById('seg-radar') ? document.getElementById('seg-radar').selectedOptions[0].text : 'Decisores detectados';
   const empresas = [...document.querySelectorAll('#lres .ln')].map(el => el.textContent).slice(0,3);
@@ -80,7 +81,6 @@ async function emailTargetConApollo(seg, fbId, clientName) {
     fb.style.color = "var(--red)";
   }
 }
-
 </script>
 <script>
 (async function() {
