@@ -18,27 +18,103 @@ function showMoni(id, btn) {
 }
 
 
-function activarLicit(tipo) {
-  const seg = document.getElementById('seg-radar') ? document.getElementById('seg-radar').selectedOptions[0].text : 'Decisores detectados';
+
+
+
+
+async function activarPolo(tipo, seg) {
+  const fb = document.getElementById('afb-polo');
+  if (tipo === 'mail') {
+    if(fb){ fb.textContent = '⏳ Creando lista en Klaviyo...'; fb.style.display = 'block'; fb.style.color = 'var(--muted)'; }
+    try {
+      const listName = `AdSmart · Moni · ${seg} · ${new Date().toLocaleDateString('es-AR')}`;
+      const r = await fetch('/api/klaviyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_list', listName })
+      });
+      const data = await r.json();
+      if (data.success) {
+        if(fb){ fb.innerHTML = `✓ Lista creada en Klaviyo: <strong>${data.listName}</strong> · <a href="https://www.klaviyo.com/lists" target="_blank" style="color:var(--orange);text-decoration:underline;">Abrir Klaviyo →</a> para importar contactos desde Apollo.`; fb.style.color = 'var(--green)'; }
+      } else {
+        if(fb){ fb.textContent = 'Error: ' + (data.errors?.[0]?.detail || JSON.stringify(data)); fb.style.color = 'var(--red)'; }
+      }
+    } catch(e) {
+      if(fb){ fb.textContent = 'Error: ' + e.message; fb.style.color = 'var(--red)'; }
+    }
+  } else {
+    if(fb){ fb.textContent = `✓ Pauta DV360 activada para [${seg}]. Audiencia: CHRO y Gerentes de Infraestructura Vaca Muerta. Impresiones: 15,000–22,000/día.`; fb.style.color = 'var(--green)'; fb.style.display = 'block'; }
+  }
+}
+
+async function activarLicit(tipo) {
   const empresas = [...document.querySelectorAll('#lres .ln')].map(el => el.textContent).slice(0,3);
   const empresasList = empresas.length > 0 ? empresas.join(', ') + (document.querySelectorAll('#lres .li').length > 3 ? ' y otras...' : '') : 'empresas detectadas';
   const licitCount = document.querySelectorAll('#lres .li').length;
-  const msgs = {
-    mail: `✓ EMAIL TARGET activado · ${licitCount} empresas detectadas · Destinatarios: decisores de ${empresasList} · Canal: email verificado Datiko · Envío estimado: 2-4 horas.`,
-    dv360: `✓ Pauta DV360 activada · Audiencia: decisores de ${empresasList} · Segmento: ${seg} · Impresiones estimadas: 15,000–22,000/día.`
-  };
   const fb = document.getElementById('afb-radar');
-  if (fb) { fb.textContent = msgs[tipo]; fb.style.display = 'block'; }
+  if (tipo === 'mail') {
+    if(fb){ fb.textContent = '⏳ Creando lista en Klaviyo...'; fb.style.display = 'block'; fb.style.color = 'var(--muted)'; }
+    try {
+      const listName = `AdSmart · Moni · Licitaciones Añelo · ${new Date().toLocaleDateString('es-AR')}`;
+      const r = await fetch('/api/klaviyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_list', listName })
+      });
+      const data = await r.json();
+      if (data.success) {
+        if(fb){ fb.innerHTML = `✓ Lista creada en Klaviyo: <strong>${data.listName}</strong> · ${licitCount} empresas detectadas (${empresasList}) · <a href="https://www.klaviyo.com/lists" target="_blank" style="color:var(--orange);text-decoration:underline;">Abrir Klaviyo →</a> para importar contactos desde Apollo.`; fb.style.color = 'var(--green)'; }
+      } else {
+        if(fb){ fb.textContent = 'Error: ' + (data.errors?.[0]?.detail || JSON.stringify(data)); fb.style.color = 'var(--red)'; }
+      }
+    } catch(e) {
+      if(fb){ fb.textContent = 'Error: ' + e.message; fb.style.color = 'var(--red)'; }
+    }
+  } else {
+    if(fb){ fb.textContent = `✓ Pauta DV360 activada · Audiencia: decisores de ${empresasList} · Impresiones estimadas: 15,000–22,000/día.`; fb.style.color = 'var(--green)'; fb.style.display = 'block'; }
+  }
 }
 
 
-function activarPolo(tipo, seg) {
-  const msgs = {
-    mail: `✓ EMAIL TARGET iniciado para [${seg}]. Procesando contactos de operadoras O&G Neuquén para comercialización de viviendas en Añelo. Estimado: 2-4 horas.`,
-    dv360: `✓ Pauta DV360 activada para [${seg}]. Audiencia: CHRO y Gerentes de Infraestructura Vaca Muerta. Impresiones: 15,000–22,000/día.`
+async function emailTargetConApollo(seg, fbId, clientName) {
+  const fb = document.getElementById(fbId);
+  if(!fb) return;
+  fb.innerHTML = "⏳ Buscando contactos en Apollo...";
+  fb.style.display = "block";
+  fb.style.color = "var(--muted)";
+  const configs = {
+    "Gerentes de Equipos Pesados (64)": { titles: ["Gerente de Equipos", "Equipment Manager", "Gerente de Maquinaria", "Fleet Manager"], locations: ["Neuquén, Argentina"] },
+    "Compras & Logística O&G (53)": { titles: ["Gerente de Compras", "Supply Chain Manager", "Jefe de Logística", "Procurement Manager"], locations: ["Neuquén, Argentina"] },
+    "Jefes de Proyecto Infraestructura (71)": { titles: ["Jefe de Proyecto", "Project Manager", "Director de Infraestructura"], locations: ["Neuquén, Argentina"] },
+    "CHRO & Gerentes de RRHH (87)": { titles: ["CHRO", "Gerente de RRHH", "HR Manager", "Director de Recursos Humanos"], locations: ["Neuquén, Argentina"] },
+    "COO & Gerentes de Operaciones (71)": { titles: ["COO", "Gerente de Operaciones", "Operations Manager"], locations: ["Neuquén, Argentina"] },
+    "Gerentes de Infraestructura (62)": { titles: ["Gerente de Infraestructura", "Infrastructure Manager"], locations: ["Neuquén, Argentina"] }
   };
-  const fb = document.getElementById('afb-polo');
-  if (fb) { fb.textContent = msgs[tipo]; fb.style.display = 'block'; }
+  const cfg = configs[seg] || { titles: [seg.replace(/\s*\(\d+\)/,"")], locations: ["Neuquén, Argentina"] };
+  try {
+    const apolloRes = await fetch("/api/apollo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ segment: seg, titles: cfg.titles, locations: cfg.locations, limit: 25 })
+    });
+    const apolloData = await apolloRes.json();
+    if (!apolloData.success) throw new Error(apolloData.error || "Apollo error");
+    const contacts = apolloData.contacts;
+    fb.innerHTML = "✓ " + contacts.length + " contactos encontrados en Apollo · ⏳ Creando lista en Klaviyo...";
+    const listName = "AdSmart · " + clientName + " · " + seg + " · " + new Date().toLocaleDateString("es-AR");
+    const klavRes = await fetch("/api/klaviyo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "create_list", listName })
+    });
+    const klavData = await klavRes.json();
+    if (!klavData.success) throw new Error("Klaviyo: " + (klavData.errors?.[0]?.detail || JSON.stringify(klavData)));
+    fb.innerHTML = "✓ <strong>" + contacts.length + " contactos</strong> encontrados en Apollo · Lista creada: <strong>" + klavData.listName + "</strong> · <a href='https://www.klaviyo.com/lists' target='_blank' style='color:var(--orange);text-decoration:underline;'>Abrir Klaviyo →</a>";
+    fb.style.color = "var(--green)";
+  } catch(e) {
+    fb.innerHTML = "Error: " + e.message;
+    fb.style.color = "var(--red)";
+  }
 }
 
 </script>
@@ -275,7 +351,7 @@ main{padding:32px 28px;max-width:1400px;margin:0 auto;}
         </select>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-end;">
-        <button class="btn bb" onclick="activarPolo('mail',document.getElementById('seg-polo').selectedOptions[0].text)">📧 EMAIL TARGET</button>
+        <button class="btn bb" onclick="emailTargetConApollo(document.getElementById('seg-polo').selectedOptions[0].text,'afb-polo','Moni')">📧 EMAIL TARGET</button>
         <button class="btn bk" onclick="activarPolo('dv360',document.getElementById('seg-polo').selectedOptions[0].text)">📊 PAUTA DV360</button>
       </div>
     </div>
@@ -296,8 +372,8 @@ main{padding:32px 28px;max-width:1400px;margin:0 auto;}
   <div class="act" id="act-radar" style="display:none;">
     <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);margin-bottom:16px;">⚡ Activación Directa de Campaña</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn bo" onclick="activar('mail','Real Estate Industrial Añelo')">✉ ENVIAR CATÁLOGO POR MAIL</button>
-      <button class="btn bb" onclick="activar('dv360','Real Estate Industrial Añelo')">📡 LANZAR PAUTA PROGRAMÁTICA DV360</button>
+      <button class="btn bo" onclick="emailTargetConApollo('Compradores Corporativos Añelo','afb-radar','Moni')">✉ ENVIAR CATÁLOGO POR MAIL</button>
+      <button class="btn bb" onclick="activarLicit('dv360')">📡 LANZAR PAUTA PROGRAMÁTICA DV360</button>
     </div>
     <div id="afb-radar" class="afb"></div>
   </div>
