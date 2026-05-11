@@ -11,31 +11,34 @@ export default async function handler(req, res) {
   const { titles, locations, limit = 25 } = req.body;
 
   try {
-    const response = await fetch('https://api.apollo.io/api/v1/mixed_people/search', {
+    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Api-Key': apolloKey,
-        'Cache-Control': 'no-cache'
+        'X-Api-Key': apolloKey
       },
       body: JSON.stringify({
         per_page: limit,
         page: 1,
         person_titles: titles || [],
-        person_locations: locations || ['Argentina'],
-        contact_email_status: ['verified', 'likely to engage']
+        person_locations: locations || ['Argentina']
       })
     });
 
     const data = await response.json();
-    if (!response.ok) return res.status(response.status).json({ error: JSON.stringify(data) });
+    
+    // Return raw data so we can debug
+    if (!response.ok) return res.status(200).json({ 
+      success: false, 
+      status: response.status,
+      raw: data 
+    });
 
     const contacts = (data.people || []).map(p => ({
       name: `${p.first_name || ''} ${p.last_name || ''}`.trim(),
       title: p.title,
       company: p.organization?.name,
-      email: p.email,
-      linkedin: p.linkedin_url
+      email: p.email
     }));
 
     return res.status(200).json({
