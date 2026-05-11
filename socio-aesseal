@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>AdSmart AI — AESSEAL Division</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A1628;--azure:#4A9EE8;--orange:#F97316;--bg:#0A1628;--bg2:#0F1D30;--border:rgba(74,158,232,0.20);--white:#F9FAFB;--muted:#94A3B8;--green:#34D399;--red:#F87171;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-weight:500;font-size:15px;line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(74,158,232,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(74,158,232,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;}
+header{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:64px;background:rgba(10,22,40,0.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);}
+.brand{display:flex;align-items:center;gap:12px;}
+.bmark{width:36px;height:36px;background:linear-gradient(135deg,var(--orange),#EA580C);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;color:#0A1628;clip-path:polygon(0 0,85% 0,100% 15%,100% 100%,15% 100%,0 85%);}
+.bname{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;letter-spacing:1px;color:var(--white);}
+.bname span{color:var(--orange);}
+.bsub{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;padding-left:12px;border-left:1px solid var(--border);}
+nav{display:flex;align-items:center;gap:2px;}
+.nb{padding:9px 18px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:6px;border:none;background:transparent;transition:all 0.15s;white-space:nowrap;}
+.nb:hover{color:var(--white);background:rgba(74,158,232,0.08);}
+.nb.active{color:var(--white);background:rgba(74,158,232,0.12);border:1px solid rgba(74,158,232,0.4);}
+.lchip{display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--azure);padding:5px 12px;border:1px solid rgba(74,158,232,0.3);background:rgba(74,158,232,0.08);}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--azure);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hbg{display:none;background:transparent;border:1px solid var(--border);color:var(--white);padding:8px 12px;cursor:pointer;font-size:18px;margin-left:8px;}
+main{padding:32px 28px;max-width:1400px;margin:0 auto;}
+.panel{display:none;}.panel.active{display:block;animation:fi 0.3s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sec{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.sec::before{content:'//';color:var(--orange);font-size:12px;}.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:24px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--azure),transparent);opacity:0.4;}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px;}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:24px;}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
+.kpi{background:var(--bg2);border:1px solid var(--border);padding:20px 22px;}
+.kl{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.kv{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;line-height:1;margin-bottom:4px;}
+.ks{font-size:12px;color:var(--muted);}
+.kbar{height:3px;background:rgba(74,158,232,0.08);margin-top:10px;border-radius:2px;overflow:hidden;}
+.kfill{height:100%;border-radius:2px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;cursor:pointer;border:none;border-radius:4px;transition:all 0.2s;white-space:nowrap;}
+.bb{background:var(--azure);color:#0A1628;}.bb:hover{background:#6BB3F0;}
+.bo{background:var(--orange);color:#0A1628;}.bo:hover{background:#FCA47B;}
+.bg{background:var(--green);color:#0A1628;}.bg:hover{background:#6EE7B7;}
+.bk{background:transparent;color:var(--azure);border:1px solid rgba(74,158,232,0.4);}.bk:hover{background:rgba(74,158,232,0.12);}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+.bdg{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;}
+.do{background:rgba(249,115,22,0.12);color:var(--orange);border:1px solid rgba(249,115,22,0.3);}
+.dg{background:rgba(52,211,153,0.12);color:var(--green);border:1px solid rgba(52,211,153,0.3);}
+.db{background:rgba(74,158,232,0.12);color:var(--azure);border:1px solid rgba(74,158,232,0.3);}
+.spinner{width:14px;height:14px;border:2px solid rgba(74,158,232,0.3);border-top-color:var(--azure);border-radius:50%;animation:spin 0.6s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.li{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--azure);padding:16px 20px;margin-bottom:12px;border-radius:0 4px 4px 0;}
+.ln{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);margin-bottom:4px;}
+.lm{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.ld{font-size:13px;color:var(--white);line-height:1.7;padding:10px 14px;background:rgba(74,158,232,0.05);border-left:2px solid var(--azure);margin-bottom:10px;}
+.ldate{font-size:11px;color:var(--orange);background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.25);padding:4px 10px;border-radius:3px;display:inline-block;margin-top:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;}
+.act{background:var(--bg2);border:1px solid rgba(74,158,232,0.3);border-top:2px solid var(--azure);padding:24px;margin-top:24px;border-radius:4px;}
+.afb{font-size:13px;color:var(--green);padding:12px 16px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);margin-top:12px;display:none;border-radius:3px;}
+.cwrap{border:1px solid var(--border);overflow:hidden;border-radius:4px;}
+.chdr{padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(74,158,232,0.04);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.cmsgs{height:340px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;background:rgba(0,0,0,0.15);}
+.cq{display:flex;gap:6px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.1);}
+.qq{background:transparent;border:1px solid rgba(74,158,232,0.25);color:var(--muted);padding:5px 12px;font-size:11px;cursor:pointer;border-radius:3px;transition:all 0.15s;}
+.qq:hover{border-color:var(--azure);color:var(--white);}
+.crow{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,0.2);}
+.cin{flex:1;background:rgba(74,158,232,0.04);border:1px solid var(--border);color:var(--white);padding:12px 16px;font-family:'Inter',sans-serif;font-size:14px;outline:none;border-radius:4px;}
+.cin:focus{border-color:var(--azure);}
+.cin::placeholder{color:rgba(148,163,184,0.4);}
+.mu{align-self:flex-end;max-width:70%;background:rgba(74,158,232,0.10);border:1px solid rgba(74,158,232,0.3);padding:12px 16px;font-size:14px;line-height:1.7;border-radius:4px;}
+.ma{align-self:flex-start;max-width:90%;background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:16px 18px;font-size:14px;line-height:1.7;border-radius:4px;}
+.mh{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.mt{align-self:flex-start;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px;font-style:italic;}
+@media(max-width:768px){
+  header{padding:10px 16px;height:auto;flex-wrap:wrap;gap:8px;}
+  .bsub{display:none;}
+  nav{display:none;width:100%;flex-direction:column;gap:4px;padding:8px 0;}
+  nav.open{display:flex;}
+  .nb{width:100%;text-align:left;}
+  .hbg{display:block;}
+  main{padding:16px;}
+  .g2,.g3,.g4{grid-template-columns:1fr !important;}
+  .cmsgs{height:240px;}
+  .mu,.ma{max-width:95%;}
+  .crow{flex-direction:column;}
+  .btn{width:100%;}
+}
+@media(max-width:480px){.kv{font-size:26px;}.bname{font-size:16px;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="bmark">AI</div>
+    <div>
+      <div class="bname">AdSmart <span>AI</span></div>
+    </div>
+    <div class="bsub">AESSEAL Division · Sellos Mecánicos</div>
+  </div>
+  <nav id="nav">
+    <button class="nb active" onclick="show('polo',this)">Directorio de Decisores</button>
+    <button class="nb" onclick="show('licit',this)">Radar de Oportunidades</button>
+    <button class="nb" onclick="show('mesa',this)">Mesa de Trabajo AI</button>
+  </nav>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="lchip"><div class="ldot"></div>LIVE</div>
+    <button class="hbg" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="polo">
+  <div class="sec">Directorio AI de Decisores · Petróleo, Gas, Minería & Industria</div>
+  <div class="card">
+    <div class="g4">
+      <div class="kpi">
+        <div class="kl">Contactos Totales</div>
+        <div class="kv" style="color:var(--azure);">412</div>
+        <div class="ks">Decisores O&G/Minería/Industria</div>
+        <div class="kbar"><div class="kfill" style="width:92%;background:linear-gradient(90deg,var(--azure),#6BB3F0);"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Decisores C-Level</div>
+        <div class="kv" style="color:var(--green);">118</div>
+        <div class="ks">Gerentes de Mantenimiento</div>
+        <div class="kbar"><div class="kfill" style="width:76%;background:linear-gradient(90deg,var(--green),#6EE7B7);"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Canales Activos</div>
+        <div class="kv" style="color:var(--orange);">3</div>
+        <div class="ks">Email + DV360 + LinkedIn</div>
+        <div class="kbar"><div class="kfill" style="width:100%;background:linear-gradient(90deg,var(--orange),#FCA47B);"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Cobertura Audiencias</div>
+        <div class="kv" style="color:var(--azure);">22K</div>
+        <div class="ks">Impresiones/día estimadas</div>
+        <div class="kbar"><div class="kfill" style="width:85%;background:linear-gradient(90deg,var(--azure),#6BB3F0);"></div></div>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="kpi">
+        <div class="kl">Segmento #1</div>
+        <div style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Gerentes de Mantenimiento O&G</div>
+        <div class="ks" style="margin-bottom:10px;">Responsables de confiabilidad de bombas y sellos mecánicos</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="bdg db">87 contactos</span>
+          <span class="bdg dg">Email Verificado</span>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Segmento #2</div>
+        <div style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Ingenieros de Confiabilidad Minería</div>
+        <div class="ks" style="margin-bottom:10px;">Reliability engineers de plantas mineras y procesamiento</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="bdg db">64 contactos</span>
+          <span class="bdg dg">LinkedIn Matched</span>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Segmento #3</div>
+        <div style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;">Jefes de Compras Industria Química</div>
+        <div class="ks" style="margin-bottom:10px;">Procurement managers de plantas químicas y farmacéuticas</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="bdg db">53 contactos</span>
+          <span class="bdg do">Próximo scraping</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="act" id="act-polo" style="display:block;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:4px;color:var(--white);">Activación de Campañas</div>
+        <div style="font-size:13px;color:var(--muted);">Seleccioná el segmento y el canal para iniciar la campaña</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Segmento Target</label>
+        <select id="seg-polo" style="background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;border-radius:4px;outline:none;cursor:pointer;">
+          <option value="mant">Gerentes de Mantenimiento O&G (87)</option>
+          <option value="rel">Ingenieros de Confiabilidad Minería (64)</option>
+          <option value="comp">Jefes de Compras Industria Química (53)</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn bb" onclick="activar('mail',document.getElementById('seg-polo').selectedOptions[0].text)">📧 EMAIL MASIVO</button>
+        <button class="btn bk" onclick="activar('dv360',document.getElementById('seg-polo').selectedOptions[0].text)">📊 PAUTA DV360</button>
+      </div>
+    </div>
+    <div class="afb" id="afb-polo"></div>
+  </div>
+</div>
+
+<div class="panel" id="licit">
+  <div class="sec">Radar de Oportunidades AI · Petróleo, Gas, Minería & Industria</div>
+  <div class="card">
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;">Detección Inteligente de Oportunidades de Negocio</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6;">El sistema AI analiza proyectos reales y probables en Oil & Gas, Minería, Química y Procesamiento que requieran sellos mecánicos API 682, protectores de rodamientos, sistemas de soporte o servicios de reparación. Incluye fecha estimada de apertura/cierre de cada oportunidad.</div>
+    </div>
+    <button class="btn bo" id="btn-licit" onclick="buscar()">🔍 DETECTAR OPORTUNIDADES</button>
+  </div>
+  <div id="lload" style="display:none;text-align:center;padding:40px 20px;">
+    <div class="spinner" style="width:32px;height:32px;border-width:3px;margin:0 auto 16px;"></div>
+    <div style="color:var(--muted);font-size:14px;">Analizando proyectos industriales con necesidades de sellado...</div>
+  </div>
+  <div id="lem" style="display:none;text-align:center;padding:30px 20px;color:var(--red);"></div>
+  <div id="lres"></div>
+  <div class="act" id="act-radar" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:4px;color:var(--white);">Activación de Campañas</div>
+        <div style="font-size:13px;color:var(--muted);">Iniciá una campaña sobre las oportunidades detectadas</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Segmento Target</label>
+        <select id="seg-radar" style="background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;border-radius:4px;outline:none;cursor:pointer;">
+          <option value="decisores">Decisores de oportunidades detectadas</option>
+          <option value="full">Universo completo de Directorio</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn bb" onclick="activar('mail',document.getElementById('seg-radar').selectedOptions[0].text)">📧 EMAIL MASIVO</button>
+        <button class="btn bk" onclick="activar('dv360',document.getElementById('seg-radar').selectedOptions[0].text)">📊 PAUTA DV360</button>
+      </div>
+    </div>
+    <div class="afb" id="afb-radar"></div>
+  </div>
+</div>
+
+<div class="panel" id="mesa">
+  <div class="sec">Mesa de Trabajo AI · Agentes Especializados</div>
+  <div class="card">
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;">Seleccioná el Agente AI</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6;">Elegí el perfil especializado que mejor se adapte a tu consulta comercial, técnica o estratégica.</div>
+    </div>
+    <div class="g2" style="margin-bottom:24px;">
+      <div id="ag-villar" onclick="selAg('villar')" style="background:var(--bg2);border:2px solid var(--green);padding:18px 20px;cursor:pointer;border-radius:4px;transition:all 0.2s;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(52,211,153,0.5);" id="dot-villar"></div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);">Dr. Augusto Villar</div>
+          <span class="bdg dg">ACTIVO</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Director de IA · Estrategia de agentes, RAG y optimización de prompts para proyectos industriales</div>
+      </div>
+      <div id="ag-echev" onclick="selAg('echev')" style="background:var(--bg2);border:2px solid var(--border);padding:18px 20px;cursor:pointer;border-radius:4px;transition:all 0.2s;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.15);" id="dot-echev"></div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--white);">Martín Echeverría</div>
+          <span class="bdg db">DISPONIBLE</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">COO · Operaciones comerciales, estructura de propuestas y gestión de pipeline de ventas B2B</div>
+      </div>
+    </div>
+  </div>
+  <div class="cwrap">
+    <div class="chdr">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;" id="aglabel">Dr. Augusto Villar activo</div>
+      <span class="bdg dg">SESIÓN ACTIVA</span>
+    </div>
+    <div class="cq">
+      <button class="qq" onclick="qa('¿Qué tipo de sello mecánico AESSEAL es más adecuado para bombas API 610 en refinación?')">¿Qué tipo de sello mecánico AESSEAL es más adecuado para bombas API 610 en refinación?</button>
+      <button class="qq" onclick="qa('Armame una propuesta comercial para YPF sobre sellos API 682 para plantas de procesamiento')">Armame una propuesta comercial para YPF sobre sellos API 682 para plantas de procesamiento</button>
+      <button class="qq" onclick="qa('¿Cómo redactar un mail de contacto inicial a un gerente de mantenimiento O&G?')">¿Cómo redactar un mail de contacto inicial a un gerente de mantenimiento O&G?</button>
+    </div>
+    <div class="cmsgs" id="cmsgs"></div>
+    <div class="crow">
+      <input type="text" class="cin" id="cin" placeholder="Consultá al agente AI seleccionado..." onkeydown="if(event.key==='Enter')enviar()">
+      <button class="btn bo" id="bta" onclick="enviar()">ANALIZAR →</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+</div>
+<script>
+// Configuración: carga desde API de Vercel que lee variables de entorno
+let GU = 'https://api.groq.com/openai/v1/chat/completions';
+let GK, SU, SK;
+let configLoaded = false;
+
+// Cargar configuración desde variables de entorno de Vercel
+async function loadConfig() {
+  try {
+    const response = await fetch('/api/config');
+    if (!response.ok) {
+      throw new Error(`API config returned ${response.status}`);
+    }
+    const config = await response.json();
+    
+    if (!config.groq_key || !config.supabase_url || !config.supabase_key) {
+      throw new Error('Configuración incompleta');
+    }
+    
+    GK = config.groq_key;
+    SU = config.supabase_url;
+    SK = config.supabase_key;
+    configLoaded = true;
+    console.log('✅ Configuración cargada desde Vercel');
+  } catch (error) {
+    console.error('❌ Error cargando configuración:', error);
+    alert('Error de configuración. Verificá que las variables de entorno estén configuradas en Vercel:\n\n- GROQ_API_KEY\n- SUPABASE_URL\n- SUPABASE_ANON_KEY');
+    configLoaded = false;
+  }
+}
+
+// Cargar configuración al inicio
+loadConfig();
+const CTX=`AESSEAL · Socio estratégico de AdSmart AI
+Líder mundial en diseño y fabricación de sellos mecánicos, sistemas de soporte y protectores de rodamientos.
+Productos principales: Sellos mecánicos API 682 (CAPI™), sellos de gas seco para compresores, protectores de rodamientos, sistemas auxiliares de sellado (Plan 53B, 54), empaquetaduras industriales.
+Verticales clave: Petróleo & Gas, Refinación, Petroquímica, Minería, Generación de Energía, Química, Farmacéutica, Pulpa & Papel, Alimentos & Bebidas.
+Cliente objetivo: Gerentes de Mantenimiento, Ingenieros de Confiabilidad, Jefes de Compras/Procurement de plantas industriales.
+Decisores típicos: Gerentes de Mantenimiento, Reliability Engineers, Supply Chain Managers, Jefes de Compras.
+Presencia global: 230 delegaciones en 104 países, 9 centros de fabricación, 58 centros de reparación.
+Diferenciadores clave: Certificación ISO 29001 (única empresa internacional del sector), garantía "No trabaja, no cobramos", envío 48 horas productos estándar, más de 13.000 sellos especiales fabricados por año, diseño modular.
+Propuesta de valor: Incremento MTBF (Mean Time Between Failures), reducción de costos de mantenimiento, confiabilidad probada, servicio técnico 24/7.`;
+const AGS={
+  villar:{n:'Dr. Augusto Villar',r:'Director de IA',i:'AV',cs:'#34D399',
+    s:`Sos el Dr. Augusto Villar, Director de IA de AdSmart. Experto en RAG, agentes y optimización de prompts para proyectos industriales de sellado.
+Tu rol: Asesorar sobre estrategias de IA aplicadas a prospección, análisis de oportunidades industriales y automatización de propuestas técnicas.
+Tono: Técnico, preciso, orientado a resultados medibles. Máximo 4 líneas de respuesta.
+Nunca menciones otras unidades de negocio de AdSmart ni datos internos globales.`},
+  echev:{n:'Martín Echeverría',r:'COO',i:'ME',cs:'#4A9EE8',
+    s:`Sos Martín Echeverría, COO de AdSmart. Experto en operaciones comerciales, estructura de propuestas y pipeline de ventas B2B industrial.
+Tu rol: Ayudar a armar propuestas comerciales para sellos mecánicos, redactar emails de contacto a decisores de mantenimiento, diseñar estrategias de cierre.
+Tono: Ejecutivo, directo, enfocado en acción comercial. Máximo 4 líneas de respuesta.
+Nunca menciones otras unidades de negocio de AdSmart ni datos internos globales.`}
+};
+let hist=[];
+let curAg='villar';
+
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('nav').classList.remove('open');
+}
+
+function selAg(id){
+  curAg=id;
+  ['villar','echev'].forEach(a=>{
+    document.getElementById('ag-'+a).style.borderColor=a===id?'var(--green)':'var(--border)';
+    const dot=document.getElementById('dot-'+a);
+    dot.style.background=a===id?'var(--green)':'rgba(255,255,255,0.15)';
+    dot.style.boxShadow=a===id?'0 0 6px rgba(52,211,153,0.5)':'none';
+  });
+  document.getElementById('aglabel').textContent=AGS[id].n+' activo';
+}
+
+function qa(t){document.getElementById('cin').value=t;enviar();}
+
+async function enviar(){
+  // Esperar a que la configuración esté cargada
+  if (!configLoaded) {
+    await loadConfig();
+  }
+  
+  const inp=document.getElementById('cin');
+  const msg=inp.value.trim(); if(!msg) return;
+  const btn=document.getElementById('bta');
+  btn.disabled=true; btn.textContent='Analizando...';
+  inp.value='';
+  const ms=document.getElementById('cmsgs');
+  const ud=document.createElement('div'); ud.className='mu'; ud.textContent=msg;
+  ms.appendChild(ud);
+  const ag=AGS[curAg];
+  const td=document.createElement('div'); td.className='mt'; td.id='thk';
+  td.innerHTML=`<div class="spinner"></div>${ag.n} analizando...`;
+  ms.appendChild(td); ms.scrollTop=ms.scrollHeight;
+  try{
+    const r=await fetch(GU,{method:'POST',headers:{'Authorization':`Bearer ${GK}`,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',
+        messages:[{role:'system',content:`${ag.s}\n\nCONTEXTO:\n${CTX}\n\nNUNCA menciones otras unidades de negocio ni datos internos de AdSmart o facturación global.`},
+          ...hist.slice(-6),{role:'user',content:msg}],
+        max_tokens:500,temperature:0.35})});
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d=await r.json(); if(d.error) throw new Error(d.error.message);
+    const rep=d.choices?.[0]?.message?.content||'Sin respuesta';
+    document.getElementById('thk')?.remove();
+    const ad=document.createElement('div'); ad.className='ma';
+    ad.innerHTML=`<div class="mh"><div style="width:22px;height:22px;border-radius:3px;background:${ag.cs}18;border:1px solid ${ag.cs}55;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${ag.cs};font-family:'Barlow Condensed',sans-serif;">${ag.i}</div><span style="color:${ag.cs};">${ag.n}</span><span style="color:var(--muted);font-size:11px;">${ag.r}</span><span style="margin-left:auto;font-size:11px;color:var(--muted);">${new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}</span></div><div style="white-space:pre-wrap;">${rep}</div>`;
+    ms.appendChild(ad); ms.scrollTop=ms.scrollHeight;
+    hist.push({role:'user',content:msg},{role:'assistant',content:rep});
+    await fetch(`${SU}/rest/v1/agent_sessions`,{method:'POST',headers:{'apikey':SK,'Authorization':`Bearer ${SK}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({agent:curAg,user_message:msg,agent_response:rep,context_used:{project:'aesseal_2026',view:'socio_aesseal'}})});
+  }catch(e){
+    document.getElementById('thk')?.remove();
+    const ed=document.createElement('div'); ed.className='ma';
+    ed.innerHTML=`<div style="color:var(--red);font-size:13px;">Error: ${e.message}</div>`;
+    ms.appendChild(ed);
+  }
+  btn.disabled=false; btn.textContent='ANALIZAR →';
+  ms.scrollTop=ms.scrollHeight;
+}
+
+async function buscar(){
+  // Esperar a que la configuración esté cargada
+  if (!configLoaded) {
+    await loadConfig();
+  }
+  
+  const btn=document.getElementById('btn-licit');
+  btn.disabled=true; btn.textContent='Detectando...';
+  document.getElementById('lem').style.display='none';
+  document.getElementById('lload').style.display='block';
+  document.getElementById('lres').innerHTML='';
+  try{
+    const r=await fetch(GU,{method:'POST',headers:{'Authorization':`Bearer ${GK}`,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',
+        messages:[{role:'system',content:'Solo JSON array válido, sin markdown.'},
+          {role:'user',content:`Identificá 8 proyectos reales o altamente probables en Argentina y Latinoamérica en Petróleo & Gas, Minería, Química, Refinación o Procesamiento para 2026 que requieran sellos mecánicos, protectores de rodamientos o sistemas de soporte. Para cada proyecto, incluí la FECHA ESTIMADA DE APERTURA/CIERRE de la oportunidad. JSON: [{"proyecto":"nombre","empresa_cliente":"quien ejecuta el proyecto","tipo":"tipo de planta/proceso","producto_requerido":"sello API 682/protector rodamiento/sistema Plan 53B/etc.","valor_estimado":"USD X","estado":"EN LICITACIÓN/ADJUDICADO/PRÓXIMO","fecha_apertura":"DD/MM/YYYY o Mes/YYYY","decisor":"cargo del decisor","oportunidad":"por qué AESSEAL debe participar"}]`}],
+        max_tokens:2500,temperature:0.3})});
+    const d=await r.json();
+    const txt=d.choices?.[0]?.message?.content||'[]';
+    const m=txt.replace(/```json|```/g,'').trim().match(/\[[\s\S]*\]/);
+    const items=m?JSON.parse(m[0]):[];
+    document.getElementById('lload').style.display='none';
+    document.getElementById('lres').innerHTML=items.map(p=>`
+      <div class="li">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+          <div><div class="ln">${p.proyecto}</div><div class="lm">${p.empresa_cliente} · ${p.tipo} · Decisor: ${p.decisor}</div></div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <span class="bdg ${p.estado.includes('LICITACIÓN')?'do':'dg'}">${p.estado}</span>
+            <span class="bdg db">${p.valor_estimado}</span>
+          </div>
+        </div>
+        <div class="ld">${p.oportunidad}<br><strong style="color:var(--azure);">Producto: ${p.producto_requerido}</strong></div>
+        <div class="ldate">📅 Apertura: ${p.fecha_apertura}</div><br>
+        <button onclick="document.getElementById('cin').value='Armame una propuesta para ${p.empresa_cliente.replace(/'/g,"\\'")} para el proyecto ${p.proyecto.replace(/'/g,"\\'")} que requiere ${p.producto_requerido}';show('mesa',document.querySelectorAll('.nb')[2]);" style="font-size:11px;background:rgba(74,158,232,0.1);border:1px solid rgba(74,158,232,0.3);color:var(--azure);padding:5px 12px;cursor:pointer;border-radius:3px;">→ Crear propuesta con AI</button>
+      </div>`).join('');
+    document.getElementById('act-radar').style.display='block';
+  }catch(e){
+    document.getElementById('lload').style.display='none';
+    document.getElementById('lem').style.display='block';
+    document.getElementById('lem').textContent='Error al detectar oportunidades. Intentá de nuevo.';
+  }
+  btn.disabled=false; btn.textContent='🔍 OPORTUNIDADES DETECTADAS';
+}
+
+function activar(tipo,seg){
+  const msgs={
+    mail:`✓ Campaña de email iniciada para [${seg}]. Procesando 400+ contactos de decisores industriales. Envío estimado: 2-4 horas.`,
+    dv360:`✓ Pauta DV360 activada para [${seg}]. Audiencia: Gerentes de Mantenimiento y Confiabilidad O&G/Minería/Industria. Impresiones: 15,000–25,000/día.`
+  };
+  ['polo','radar'].forEach(p=>{const f=document.getElementById('afb-'+p);if(f){f.textContent=msgs[tipo];f.style.display='block';}});
+}
+</script>
+</body>
+</html>
