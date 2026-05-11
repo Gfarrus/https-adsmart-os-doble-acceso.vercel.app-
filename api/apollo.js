@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const { titles, locations, limit = 25 } = req.body;
 
   try {
-    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+    const response = await fetch('https://api.apollo.io/v1/people/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
