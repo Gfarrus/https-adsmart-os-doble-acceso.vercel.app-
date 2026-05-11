@@ -8,30 +8,30 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'APOLLO_API_KEY not configured' });
   }
 
-  const { segment, titles, industries, locations, limit = 25 } = req.body;
+  const { titles, locations, limit = 25 } = req.body;
 
   try {
-    const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+    const response = await fetch('https://api.apollo.io/api/v1/mixed_people/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Api-Key': apolloKey
+        'X-Api-Key': apolloKey,
+        'Cache-Control': 'no-cache'
       },
       body: JSON.stringify({
         per_page: limit,
         page: 1,
         person_titles: titles || [],
-        organization_industry_tag_ids: industries || [],
         person_locations: locations || ['Argentina'],
         contact_email_status: ['verified', 'likely to engage']
       })
     });
 
     const data = await response.json();
-    if (!response.ok) return res.status(response.status).json(data);
+    if (!response.ok) return res.status(response.status).json({ error: JSON.stringify(data) });
 
     const contacts = (data.people || []).map(p => ({
-      name: `${p.first_name} ${p.last_name}`,
+      name: `${p.first_name || ''} ${p.last_name || ''}`.trim(),
       title: p.title,
       company: p.organization?.name,
       email: p.email,
