@@ -550,7 +550,11 @@ async function buscar(){
     document.getElementById('lres').innerHTML=items.map(p=>`
       <div class="li">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
-          <div><div class="ln">${p.empresa}</div><div class="lm">${p.proyecto} · Decisor: ${p.decisor} · Personal campo: ${p.personal_campo}</div></div>
+          <div>
+            <div class="ln">${p.empresa}</div>
+            <div class="lm">${p.proyecto} · Decisor: ${p.decisor} · Personal campo: ${p.personal_campo}</div>
+            ${p.fecha_entrega_requerida ? `<div style="margin-top:4px;"><span class="bdg do">📅 ENTREGA REQUERIDA: ${p.fecha_entrega_requerida}</span></div>` : ''}
+          </div>
           <div style="display:flex;gap:6px;align-items:center;">
             <span class="bdg ${p.urgencia==='ALTA'?'dorange':'dblue'}">${p.urgencia} URGENCIA</span>
             <span class="bdg dgreen">${p.unidades} UNID.</span>
