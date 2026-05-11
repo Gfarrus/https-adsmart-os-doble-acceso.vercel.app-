@@ -11,13 +11,15 @@ export default async function handler(req, res) {
   const { titles, locations, limit = 25 } = req.body;
 
   try {
+    // Try new endpoint with api_key in body
     const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Api-Key': apolloKey
+        'Cache-Control': 'no-cache'
       },
       body: JSON.stringify({
+        api_key: apolloKey,
         per_page: limit,
         page: 1,
         person_titles: titles || [],
@@ -27,12 +29,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
-    // Return raw data so we can debug
-    if (!response.ok) return res.status(200).json({ 
-      success: false, 
-      status: response.status,
-      raw: data 
-    });
+    if (data.error) return res.status(200).json({ success: false, error: data.error });
 
     const contacts = (data.people || []).map(p => ({
       name: `${p.first_name || ''} ${p.last_name || ''}`.trim(),
