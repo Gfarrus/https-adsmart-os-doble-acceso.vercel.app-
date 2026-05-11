@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 function activarMoni(tipo, seg) {
   const msgs = {
     mail: `✓ Campaña de email iniciada para [${seg}]. Procesando 340+ contactos de operadoras O&G Neuquén. Envío estimado: 2-4 horas.`,
@@ -116,7 +117,6 @@ async function emailTargetConApollo(seg, fbId, clientName) {
     fb.style.color = "var(--red)";
   }
 }
-
 </script>
 <script>
 (async function() {
@@ -530,7 +530,7 @@ async function buscar(){
     const r=await fetch(GU,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'llama-3.3-70b-versatile',
         messages:[{role:'system',content:'Solo JSON array válido, sin markdown.'},
-          {role:'user',content:`Identificá 8 empresas reales de Oil & Gas activas en Vaca Muerta/Neuquén que necesitan viviendas para su personal en Añelo ahora mismo. JSON: [{"empresa":"","proyecto":"proyecto actual","personal_campo":"","decisor":"cargo","necesidad":"por qué necesita viviendas ahora","unidades":número,"urgencia":"ALTA o MEDIA"}]`}],
+          {role:'user',content:`Identificá 8 empresas reales de Oil & Gas activas en Vaca Muerta/Neuquén que necesitan viviendas para su personal en Añelo ahora mismo. IMPORTANTE: incluí fecha_entrega_requerida obligatoria en cada empresa. JSON: [{"empresa":"","proyecto":"proyecto actual","personal_campo":"","decisor":"cargo","necesidad":"por qué necesita viviendas ahora","unidades":número,"urgencia":"ALTA o MEDIA","fecha_entrega_requerida":"MM/YYYY — OBLIGATORIO"}]`}],
         max_tokens:2000,temperature:0.3})});
     const d=await r.json();
     const txt=d.choices?.[0]?.message?.content||'[]';
