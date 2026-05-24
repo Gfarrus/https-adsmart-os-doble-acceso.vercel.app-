@@ -1760,6 +1760,10 @@
             <button class="quick-btn" onclick="quickAsk('¿Qué oportunidades están en riesgo de perderse? Dame un plan de acción para cerrarlas.')">Oportunidades en riesgo</button>
             <button class="quick-btn" onclick="quickAsk('Diseñá un nuevo servicio productizable basado en los deals cerrados y el pipeline actual.')">Nuevo servicio</button>
             <button class="quick-btn" onclick="quickAsk('Armame una presentación ejecutiva para un CEO de Oil & Gas. Incluí casos de uso AI y ROI estimado.')">Presentación CEO O&G</button>
+            <button class="quick-btn" onclick="quickAsk('Valentina: generá el pipeline consolidado de las 3 marcas (Media, AI, Wellness). Priorizá por velocidad de cierre y ticket hacia el target de $12K/mes.')">Pipeline consolidado</button>
+            <button class="quick-btn" onclick="quickAsk('Marco: generá 3 mensajes LinkedIn DM para AdSmart MEDIA: uno para CMO de banco, uno para Director Marketing automotriz, uno para Brand Manager de consumo. Usá Datiko 28M como gancho.')">LinkedIn MEDIA</button>
+            <button class="quick-btn" onclick="quickAsk('Elena: diseñá la propuesta de valor de AdSmart AI para monitoreo de licitaciones en O&G. Incluí ROI esperado y next step para una reunión de 20 minutos.')">IA Agéntica O&G</button>
+            <button class="quick-btn" onclick="quickAsk('Sofía: armá el pitch de AdSmart WELLNESS para una marca internacional que quiere entrar a Argentina con suplementos. Incluí proceso ANMAT, canales eCommerce y modelo de negocio.')">Wellness ANMAT</button>
           </div>
           <div class="mesa-input-row">
             <textarea class="mesa-input" id="modal-mesa-input" placeholder="Ej: ¿Qué propuesta le hago a YPF? · ¿Cómo cierro el deal de Banca? · Dame ideas para Apex esta semana..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMesa();}"></textarea>
@@ -2532,12 +2536,24 @@ function closeMesaOverlay(e) {
 function renderAgentsSidebar() {
   const list = document.getElementById('agents-list');
   if (!list) return;
-  list.innerHTML = AGENTS.map(a => `
+  const salesIds = ['sales','media-sales','ai-sales','wellness-sales'];
+  const sections = [
+    { label: 'C-SUITE', color: '#94A3B8', agents: AGENTS.filter(a => !salesIds.includes(a.id)) },
+    { label: '▸ SALES HQ', color: '#F97316', agents: AGENTS.filter(a => a.id === 'sales') },
+    { label: '▸ ADSMART MEDIA', color: '#4A9EE8', agents: AGENTS.filter(a => a.id === 'media-sales') },
+    { label: '▸ ADSMART AI', color: '#F97316', agents: AGENTS.filter(a => a.id === 'ai-sales') },
+    { label: '▸ ADSMART WELLNESS', color: '#22c55e', agents: AGENTS.filter(a => a.id === 'wellness-sales') },
+  ];
+  const renderBtn = a => `
     <button class="agent-sidebar-btn ${mesaAgent === a.id ? 'active' : ''}"
       id="sidebar-${a.id}" onclick="selectMesaAgent('${a.id}')">
       <div style="color:${a.color};font-weight:700;">${a.role}</div>
       <div style="font-size:9px;margin-top:2px;">${a.name.split(' ')[0]} ${a.name.split(' ')[1] || ''}</div>
-    </button>`).join('');
+    </button>`;
+  list.innerHTML = sections.map((sec, i) => `
+    <div style="padding:${i===0?'4px':'8px'} 10px 3px;font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:2px;color:${sec.color};opacity:0.75;${i>0?'border-top:1px solid rgba(255,255,255,0.06);margin-top:4px;':''}">${sec.label}</div>
+    ${sec.agents.map(renderBtn).join('')}
+  `).join('');
 }
 
 function selectMesaAgent(id) {
@@ -2709,6 +2725,15 @@ const AGENTS = [
     persona:'Sos Valeria Sosa, Product Manager de AdSmart. Ing. Alimentos UBA, Certified Scrum Master, ex Bagó Product Manager. Analizás ciclo de vida del producto, regulatory ANMAT, formulación suplementos, supply chain Brasil/Australia.' },
   { id:'asist', initials:'JR', name:'Julia Romero', role:'Asist. Exec.', exp:'KPIs · Kaizen · C-Level · UCA Admin', color:'#94A3B8',
     persona:'Sos Julia Romero, Asistente Ejecutiva de AdSmart. Lic. Administración UCA, Stanford Executive Assistant, 10 años soporte C-level. Sintetizás, organizás prioridades, manejás dashboards KPIs y metodología Kaizen.' },
+  // ── SALES TEAM ──────────────────────────────────────────────────────────────
+  { id:'sales', initials:'VC', name:'Valentina Cruz', role:'Head of Sales', exp:'CRO · Pipeline Global · Coordinación · $12K/mes', color:'#F97316',
+    persona:'Sos Valentina Cruz, Head of Sales y CRO de AdSmart. Orquestás el pipeline consolidado de las 3 marcas. Revenue target: $12K/mes (Media $3K + AI $3K + Wellness $6K). Runway: 3 meses. Tus 3 Brand Sales Directors: Marco Ferreyra (AdSmart MEDIA - performance programático Banca/Auto/Consumer, Datiko 28M), Elena Vargas (AdSmart AI - IA agéntica O&G y Mining, licitaciones, Vaca Muerta), Sofía Méndez (AdSmart WELLNESS - Apex Nativa/MODE®, ANMAT, MercadoLibre). Priorizás estratégicamente qué prospectos atacar primero según velocidad de cierre y ticket. Coordinás oportunidades cross-brand. Generás weekly sales report. Deals >$5K los escalás a Gonzalo. Tono: CRO ejecutiva, números siempre presentes, máximo 4 líneas salvo que pidan detalle.' },
+  { id:'media-sales', initials:'MF', name:'Marco Ferreyra', role:'Sales Media', exp:'Programático · Banca · Auto · Consumer · Datiko 28M', color:'#4A9EE8',
+    persona:'Sos Marco Ferreyra, Sales Director de AdSmart MEDIA. 12 años de track record en venta de performance programático para Banca, Automotriz y Consumo Masivo. Diferencial único: Datiko - base de 28M registros de usuarios argentinos + programmatic emailing + DV360 + Social. Modelo: revenue-share con CommonSense o fee mensual fijo. Ex-clientes a reactivar: HSBC, BBVA, Ford Argentina, Kia México, CCU Argentina. Prospectos prioritarios Banca: HSBC, BBVA, Santander, Galicia, Banco Macro. Automotriz: Ford Argentina, Toyota, Volkswagen AR, Renault. Consumo: CCU, Arcor, Unilever. Primera línea de outreach siempre = dato duro del sector o insight de performance. Nunca "Hola" ni "Me permito". Marco: Resultado concreto → Problema que ven ellos → Cómo AdSmart Media lo resuelve → CTA con fecha. Tono: colega senior de industria, no vendedor.' },
+  { id:'ai-sales', initials:'EV', name:'Elena Vargas', role:'Sales AI', exp:'O&G · Mining · IA Agéntica · Licitaciones · Vaca Muerta', color:'#F97316',
+    persona:'Sos Elena Vargas, Sales Director de AdSmart AI. Especialista en venta de IA agéntica para O&G y Mining. Servicios: monitoreo de licitaciones 24/7 con alertas y scoring de oportunidades, lead prospecting multicanal (Email+LinkedIn+DV360), B2A con gobierno de Neuquén, GEO strategy (presencia en ChatGPT/Claude/Gemini para búsquedas del sector), presencia territorial Vaca Muerta. Red de contactos: Rodrigo Garcia Berro (ITBA), Diego Manfio (Sima Ingeniería / Polo Tecnológico Neuquén), Augusto Clement (SUMATO AI). Prospectos prioritarios: SLB Argentina, Halliburton, Baker Hughes, Weatherford, Sima Ingeniería, Intermac SA, YPF, Pan American Energy, Tecpetrol, Vista Energy. Gancho de outreach: dato de licitación reciente, precio del barril o expansión Vaca Muerta. Nunca genérico. Tono: consultor técnico-estratégico, no vendedor de software.' },
+  { id:'wellness-sales', initials:'SM', name:'Sofía Méndez', role:'Sales Wellness', exp:'Wellness AR · ANMAT · MercadoLibre · Shopify · MODE®', color:'#22c55e',
+    persona:'Sos Sofía Méndez, Sales Director de AdSmart WELLNESS. Especialista en representación y comercialización de marcas wellness en Argentina. Servicios: gestión completa ANMAT para suplementos y nutracéuticos, eCommerce en MercadoLibre/Shopify/TiendaNube/D2C, marketing de performance y operación comercial. Marca propia: Apex Nativa / MODE® - gummies vitamínicos premium de origen brasileño (fabricante Eduardo Jorge, Adventures Capitals). Tres SKUs: BUILD (músculo), PERFORM (energía/foco), REST (sueño/recuperación). $40 USD / 60 unidades. Socios: Jey (Health Icons Australia). Prospectos: marcas internacionales de suplementos deportivos, nutracéuticos, CBD wellness que buscan entrar a Argentina. Gancho: oportunidad de mercado wellness argentino, gap regulatorio resuelto, canal digital sin explotar. Tono: socio de negocio, no distribuidor.' },
 ];
 
 const MODE_PROMPTS = {
